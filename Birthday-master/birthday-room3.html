@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="ie lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html class="ie lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html class="ie lt-ie9"> <![endif]-->
+<!--[if gt IE 8]> <html> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en"><!-- <![endif]-->
+
+<head>
+	<title>Happy Birthday</title>
+	<meta charset="UTF-8" />
+	<meta name="description" content="Happy Birthday">
+	<meta name="robots" content="index, follow" />
+	<link rel="author" href="https://plus.google.com/u/1/+SaptheshV/" />
+	<meta name="keywords" content="Birthday, Happy">
+	<!-- Strat of Facebook Meta -->
+	<meta property="og:type" content="E-Greeting" />
+	<meta property="og:image" content="favicon.ico" />
+	<meta property="og:description" content="Wish you a very Happy Birthday">
+	<!-- End of Facebook Meta Tags -->
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="stylesheet.css">
+	<link rel="stylesheet" type="text/css" href="loading.css">
+	<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+	<!-- <link href='http://fonts.googleapis.com/css?family=Nunito' rel='stylesheet' type='text/css'> -->
+	<link rel="stylesheet/less" href="cake.less">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.1.0/less.min.js"></script>
+
+	<style>
+		/* Dark overlay at start */
+		.dark-room {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: #000;
+			opacity: 0.9;
+			transition: opacity 2s ease;
+			z-index: 999;
+			/* keep it on top */
+		}
+
+		.dark-room.hidden {
+			opacity: 0;
+			pointer-events: none;
+			/* let clicks go through once hidden */
+		}
+
+		/* Add custom styling for your uploaded image */
+		.model-wrapper {
+			position: fixed;
+			top: 60%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			text-align: center;
+		}
+
+		.model-wrapper img {
+			max-width: 350px;
+			width: 300px;
+			transition: opacity 1s ease-in-out;
+			/* smooth fade */
+			filter: drop-shadow(0 0 20px rgba(205, 158, 206, 0.1));
+		}
+
+		#turn_on {
+			position: relative;
+			z-index: 9999;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- Dark room overlay -->
+	<div class="dark-room" id="darkRoom"></div>
+	<div class="back-wall"></div>
+	<div class="floor"></div>
+
+	<div class="loading"></div>
+	<audio class="song" controls loop>
+		<source src="../static/music/happy-birthday1.mp3">
+		</source>
+		Your browser isn't invited for super fun audio time.
+	</audio>
+	<div class="balloons text-center" id="b1">
+		<h2 style="color:#F2B300;">U</h2>
+	</div>
+	<div class="balloons text-center" id="b2">
+		<h2 style="color:#0719D4;">M</h2>
+	</div>
+	<div class="balloons text-center" id="b3">
+		<h2 style="color:#D14D39;">I</h2>
+	</div>
+	<div class="balloons text-center" id="b4">
+		<h2 style="color:#8FAD00;">S</h2>
+	</div>
+	<div class="balloons text-center" id="b5">
+		<h2 style="color:#8377E4;">O</h2>
+	</div>
+	<div class="balloons text-center" id="b6">
+		<h2 style="color:#99C96A;">N</h2>
+	</div>
+	<div class="balloons text-center" id="b7">
+		<h2 style="color:#20CFB4;">A</h2>
+	</div>
+
+	<img src="Balloon-Border.png" width="100%" class="balloon-border">
+
+
+	<div class="container">
+
+
+		<div class="row">
+			<div class="col-md-2 col-xs-2 bulb-holder">
+				<div class="bulb" id="bulb_yellow"></div>
+			</div>
+			<div class="col-md-2 col-xs-2 bulb-holder">
+				<div class="bulb" id="bulb_red"></div>
+			</div>
+			<div class="col-md-2 col-xs-2 bulb-holder">
+				<div class="bulb" id="bulb_blue"></div>
+			</div>
+			<div class="col-md-2 col-xs-2 bulb-holder">
+				<div class="bulb" id="bulb_green"></div>
+			</div>
+			<div class="col-md-2 col-xs-2 bulb-holder">
+				<div class="bulb" id="bulb_pink"></div>
+			</div>
+			<div class="col-md-2 col-xs-2 bulb-holder">
+				<div class="bulb" id="bulb_orange"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 text-center">
+				<img src="banner.png" class="bannar">
+			</div>
+		</div>
+
+		<!-- Your Cartoon Model Image -->
+		<div class="row">
+			<div class="col-md-12 model-wrapper">
+				<img src="../static/images/cuple1.png" alt="Couple Cartoon" id="modelImage">
+			</div>
+		</div>
+
+
+		<div class="row cake-cover">
+			<div class="col-md-12 texr-center">
+				<div class="cake">
+					<div class="velas">
+						<div class="fuego"></div>
+						<div class="fuego"></div>
+						<div class="fuego"></div>
+						<div class="fuego"></div>
+					</div>
+					<div class="cobertura"></div>
+					<div class="bizcocho"></div>
+				</div>
+			</div>
+		</div>
+		<div class="row message">
+			<div class="col-md-12">
+				<!-- <p><span>Today Is... </span> 🎉</p>
+				<p><span>As Beautiful As Other Days </span> 🌸</p>
+				<p><span>But You Realize </span> 🤔</p>
+				<p><span>Another Year Has Gone </span> ⏳</p>
+				<p><span>In A Blink Of The Eyes </span> 👀</p>
+				<p><span><strong>However </strong></span> ✨</p>
+				<p><span>Do You Know..? </span> ❓</p>
+				<p><span>Today Is Just Special </span> 🌟</p>
+				<p><span>So Special To You </span> 💖</p>
+				<p><span>That's Why </span> 👉</p>
+				<p><span>Let's Make It... </span> 🎊</p>
+				<p><span>The Best Celebration Ever </span> 🥳</p>
+				<p><span>And Let Me Share... </span> 💌</p>
+				<p><span>A Piece Of Happiness To You </span> 😊</p>
+				<p><span>I Made All This... </span> 🎂</p>
+				<p><span>As A Birthday Present To You </span> 🎁</p>
+				<p><span>Thanks For The Friendship We Made </span> 🤝</p>
+				<p><span>Thanks For Everything </span> 🙏</p>
+				<p><span>I Wish You All The Best </span> 🌈</p>
+				<p><span>May Your Life Be At Ease </span> ☮️</p>
+				<p><span>May All Your Wishes Come True </span> 🌠</p>
+				<p><span>Remember </span> 📌</p>
+				<p><span>Your Ambitions </span> 🚀</p>
+				<p><span>You Live As A Free Bird... </span> 🕊️</p>
+				<p><span>Flying In The Blue Sky </span> ☁️</p>
+				<p><span>Now Things Are Different... </span> 🔄</p>
+				<p><span>Real Story Of Your Life </span> 📖</p>
+				<p><span>Is Just About To Begin </span> 🌅</p>
+				<p><span>Indeed.. </span> ✅ </p>
+				<p><span>But... </span> 🤷</p>
+				<p><span>Don't Worry </span> 💪</p>
+				<p><span>Because... </span> 🙌</p>
+				<p><span>God Has Your Back </span> ✝️</p>
+				<p><span>And </span> ➕</p>
+				<p><span>This Year Will Be Better </span> 🌞</p>
+				<p><span>And I Hope </span> 💭</p>
+				<p><span>You'll Find... </span> 🔍</p>
+				<p><span>Happiness Along The Way </span> 😍</p>
+				<p><span>Keep Your Spirit Up </span> 🔥</p>
+				<p><span>Enjoy Every Single Moment... </span> 🎶</p>
+				<p><span>That You Experience Today </span> 📅</p>
+				<p><span>Fill It With Your Most Beautiful Smile </span> 😁</p> -->
+				<p><span>And Make It The Best Memory.. </span> 🖼️</p>
+				<p><span>Lastly... </span> 🎀</p>
+				<p><span>I'd Like To Wish You One More Time </span> 💌</p>
+				<p><span>A Very Happy Birthday My Heart Umi Love You </span>❤️🎂</p>
+
+
+			</div>
+		</div>
+		<div class="navbar navbar-fixed-bottom">
+			<div class="row">
+				<div class="col-md-6 text-center col-md-offset-3">
+					<button class="btn btn-primary" id="turn_on">Turn On Lights</button>
+					<button class="btn btn-primary" id="play">Play Music</button>
+					<button class="btn btn-primary" id="bannar_coming">Let's Decorate</button>
+					<button class="btn btn-primary" id="balloons_flying">Fly With Balloons</button>
+					<button class="btn btn-primary" id="cake_fadein">Most Delicious Cake Ever</button>
+					<button class="btn btn-primary" id="light_candle"> Light Candle</button>
+					<button class="btn btn-primary" id="wish_message">Happy Birthday</button>
+					<button class="btn btn-primary" id="story">A mesage for you</button>
+					<button class="btn btn-primary" id="go_balcony">
+						Go to Balcony
+					</button>
+				</div>
+			</div>
+			<!-- <div class="col-md-2">
+			</div>
+			<div class="col-md-2">
+			</div>
+			<div class="col-md-2">
+			</div>
+			<div class="col-md-2">
+			</div>
+			<div class="col-md-2">
+			</div> -->
+		</div>
+
+
+	</div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="effect.js"></script>
+<script>
+	$(document).ready(function () {
+		// When "Turn On Lights" button is clicked
+		$("#turn_on").on("click", function () {
+			$("#darkRoom").addClass("hidden");
+		});
+
+		// When the message starts
+		$("#story").on("click", function () {
+			let $img = $("#modelImage");
+
+			// Fade out
+			$img.css("opacity", "0");
+
+			// After fade-out, change image, then fade-in
+			setTimeout(function () {
+				$img.attr("src", "../static/images/hug1.png");
+				$img.css("opacity", "1");
+			}, 1000); // match transition time
+		});
+	});
+
+</script>
+
+</html>
