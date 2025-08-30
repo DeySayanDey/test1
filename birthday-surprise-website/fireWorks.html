@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎉 Happy Birthday!</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #142538;
+      font-family: sans-serif;
+      color: white;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    #starCanvas {
+      z-index: 2;
+      opacity: 0.2;
+    }
+
+    #fireCanvas {
+      z-index: 1;
+    }
+
+    #startOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      cursor: pointer;
+    }
+
+    #startOverlay .overlayContent {
+      color: white;
+      font-size: 2rem;
+      text-align: center;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    #balconyImage {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      height: 45vh;
+      pointer-events: none;
+
+      /* Make sure PNG transparency is respected */
+      background: transparent;
+
+      /* Soft shadow / glow effect */
+      filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.6));
+    }
+
+
+    #controls {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      display: flex;
+      gap: 10px;
+      background: rgba(9, 21, 36, 0.85);
+      padding: 10px 20px;
+      border-radius: 10px;
+      backdrop-filter: blur(5px);
+    }
+
+    #controls input {
+      padding: 6px;
+      width: 300px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      outline: none;
+    }
+
+    #controls button {
+      padding: 6px 14px;
+      font-size: 16px;
+      background: linear-gradient(45deg, #ff4080, #ff66a3);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #controls button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(255, 64, 128, 0.6);
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Start Overlay -->
+  <div id="startOverlay">
+    <div class="overlayContent">✨ Click to Start ✨</div>
+  </div>
+  <audio id="bgMusic" loop autoplay muted>
+    <source src="./static/music/calm-night1.mp3" type="audio/mpeg">
+  </audio>
+
+  <canvas id="starCanvas"></canvas>
+  <canvas id="fireCanvas"></canvas>
+  <img src="./static/images/balcony1.png" alt="Couple on Balcony" id="balconyImage" />
+
+  <div id="controls">
+    <input id="userInput" type="text" placeholder="Type your wish here..." />
+    <button onclick="fireUserMessage()">🎇 Fire Message</button>
+    <button id="muteBtn">🔊 Mute</button>
+  </div>
+
+  <script>
+    const overlay = document.getElementById("startOverlay");
+    const audio = document.getElementById("bgMusic");
+
+    overlay.addEventListener("click", () => {
+      overlay.style.display = "none";  // hide overlay
+      audio.muted = false;
+      audio.volume = 1;
+      audio.play().catch(err => console.log("Audio play failed:", err));
+      startFireworks();  // 🚀 begin fireworks animation
+    });
+
+
+    // Mute/Unmute toggle
+    const muteBtn = document.getElementById("muteBtn");
+    const bgMusic = document.getElementById("bgMusic");
+
+    muteBtn.addEventListener("click", () => {
+      if (bgMusic.muted || bgMusic.volume === 0) {
+        bgMusic.muted = false;
+        bgMusic.volume = 1;
+        muteBtn.textContent = "🔊 Mute";
+      } else {
+        bgMusic.muted = true;
+        muteBtn.textContent = "🔇 Unmute";
+      }
+    });
+    const fireCanvas = document.getElementById('fireCanvas');
+    const fireCtx = fireCanvas.getContext('2d');
+    const starCanvas = document.getElementById('starCanvas');
+    const starCtx = starCanvas.getContext('2d');
+    let w, h;
+
+    function resize() {
+      w = fireCanvas.width = starCanvas.width = window.innerWidth;
+      h = fireCanvas.height = starCanvas.height = window.innerHeight;
+      drawStaticStars();
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Draw static stars once
+    function drawStaticStars() {
+      starCtx.fillStyle = '#0d1b2a';
+      starCtx.fillRect(0, 0, w, h);
+      let starCount = 120;
+      for (let i = 0; i < starCount; i++) {
+        let x = Math.random() * w;
+        let y = Math.random() * h;
+        let radius = Math.random() * 1.5;
+        starCtx.beginPath();
+        starCtx.arc(x, y, radius, 0, Math.PI * 2);
+        starCtx.fillStyle = 'white';
+        starCtx.fill();
+      }
+    }
+
+    // Particle system
+    class Particle {
+      constructor(x, y, dx, dy, color, glow = false, radius = 3) {
+        this.x = x;
+        this.y = y;
+        this.dx = dx * 0.9;
+        this.dy = dy * 0.9;
+        this.alpha = 1;
+        this.color = color;
+        this.glow = glow;
+        this.radius = radius;
+      }
+      update() {
+        this.x += this.dx;
+        this.y += this.dy;
+        this.dy += 0.018;
+        this.alpha -= 0.003;
+      }
+      draw() {
+        if (this.alpha <= 0) return;
+        fireCtx.save();
+        fireCtx.globalAlpha = Math.max(this.alpha, 0);
+        const gradient = fireCtx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 3);
+        gradient.addColorStop(0, '#fff');
+        gradient.addColorStop(0.3, this.color);
+        gradient.addColorStop(1, '#000');
+        fireCtx.fillStyle = gradient;
+        if (this.glow) {
+          fireCtx.shadowBlur = 6;
+          fireCtx.shadowColor = `${this.color}80`;
+        }
+        fireCtx.beginPath();
+        fireCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        fireCtx.fill();
+        fireCtx.restore();
+      }
+      isOffscreen() {
+        return this.y > h + 100 || this.x < -100 || this.x > w + 100 || this.alpha <= 0;
+      }
+    }
+
+    class Rocket {
+      constructor(x, message = null, offset = 0) {
+        const balconyImg = document.getElementById("balconyImage");
+        const balconyHeight = balconyImg.offsetHeight || 0.45 * h;
+        this.x = x;
+        this.y = h - balconyHeight;
+        this.targetY = h / 3 + offset;
+        this.dy = -3.8 - Math.random() * 1;
+        this.burst = false;
+        this.message = message;
+        this.alpha = 1;
+        this.smokeTrail = [];
+      }
+      update() {
+        if (!this.burst) {
+          this.smokeTrail.push({
+            x: this.x,
+            y: this.y,
+            alpha: 0.5,
+            radius: 3 + Math.random() * 2
+          });
+
+          // always move upward
+          this.y += this.dy;
+
+          if (this.y <= this.targetY) {
+            this.message ? createTextPattern(this.x, this.y, this.message) : createBurst(this.x, this.y);
+            this.burst = true;
+          }
+        } else {
+          this.alpha -= 0.02;
+        }
+        // fade smoke particles
+        this.smokeTrail.forEach(s => s.alpha -= 0.02);
+        this.smokeTrail = this.smokeTrail.filter(s => s.alpha > 0);
+      }
+      draw() {
+        if (!this.burst) {
+          fireCtx.save();
+          fireCtx.fillStyle = '#fff';
+          fireCtx.shadowBlur = 6;
+          fireCtx.shadowColor = '#fff';
+          fireCtx.beginPath();
+          fireCtx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+          fireCtx.fill();
+          fireCtx.restore();
+        }
+        // draw smoke trail
+        this.smokeTrail.forEach(s => {
+          fireCtx.save();
+          fireCtx.globalAlpha = s.alpha;
+          fireCtx.fillStyle = '#ccc';
+          fireCtx.beginPath();
+          fireCtx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+          fireCtx.fill();
+          fireCtx.restore();
+        });
+      }
+    }
+
+    const fireworks = [];
+    const rockets = [];
+    const colors = ['#ff0040', '#ff8000', '#ffff00', '#00ff80', '#00ffff', '#0080ff', '#ff00ff', '#ffffff'];
+
+    function createBurst(x, y) {
+      const count = 50 + Math.floor(Math.random() * 30);
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 2.5 + 1.8;
+        const dx = Math.cos(angle) * speed;
+        const dy = Math.sin(angle) * speed;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        fireworks.push(new Particle(x, y, dx, dy, color, true));
+      }
+    }
+
+    let letterMap = {};
+
+    function createTextPattern(x, y, message) {
+      const charSpacing = 90;
+      const scale = 5;
+      const totalWidth = message.length * charSpacing;
+      const startX = x - totalWidth / 2;
+      message.split('').forEach((ch, i) => {
+        if (ch === ' ') return;
+        const offsetX = startX + i * charSpacing;
+        const pattern = letterMap[ch.toUpperCase()] || [];
+        const charColor = colors[Math.floor(Math.random() * colors.length)];
+        pattern.forEach(p => {
+          const px = offsetX + p.x * scale;
+          const py = y + p.y * scale;
+          fireworks.push(new Particle(px, py, 0, 0, charColor, true, 3));
+        });
+      });
+    }
+
+    function fireUserMessage() {
+      const raw = document.getElementById("userInput").value.trim().toUpperCase();
+      if (!raw) return alert("Please enter your wish!");
+      const words = raw.split(/\s+/);
+      const totalWidth = words.length * 200;
+      const startX = (w - totalWidth) / 2;
+      for (let i = 0; i < words.length; i++) {
+        const x = startX + i * 200;
+        const offsetY = (i - (words.length - 1) / 2) * 80;
+        rockets.push(new Rocket(x, words[i], offsetY));
+        rockets.push(new Rocket(x + 20, null, offsetY));
+      }
+    }
+
+    const messageQueue = [
+      ['HAPPY', 'BIRTHDAY', 'MY', 'LOVE'],
+      ['YOU', 'ARE', 'MY', 'HEART'],
+      ['FOREVER', 'WITH', 'YOU'],
+      ['MY', 'HAPPY', 'PLACE'],
+      ['LOVE', 'YOU', 'UMI']
+    ];
+
+
+    let messageIndex = 0;
+
+    function fireMessageSet() {
+      const messages = messageQueue[messageIndex];
+      messageIndex = (messageIndex + 1) % messageQueue.length;
+      const totalWidth = messages.length * 200;
+      const startX = (w - totalWidth) / 2;
+      for (let i = 0; i < messages.length; i++) {
+        const x = startX + i * 200;
+        const offsetY = (i - (messages.length - 1) / 2) * 80;
+        rockets.push(new Rocket(x, messages[i], offsetY));
+        rockets.push(new Rocket(x + 20, null, offsetY));
+      }
+    }
+
+    let running = true;
+
+    function animate() {
+      if (!running) {
+        requestAnimationFrame(animate);
+        return;
+      }
+
+      fireCtx.fillStyle = 'rgba(12, 30, 51, 0.15)';
+      fireCtx.fillRect(0, 0, w, h);
+
+      for (let i = rockets.length - 1; i >= 0; i--) {
+        const r = rockets[i];
+        r.update();
+        r.draw();
+        if (r.burst && r.alpha <= 0) rockets.splice(i, 1);
+      }
+
+      for (let i = fireworks.length - 1; i >= 0; i--) {
+        const p = fireworks[i];
+        p.update();
+        p.draw();
+        if (p.isOffscreen() || p.alpha <= 0) fireworks.splice(i, 1);
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    function startFireworks() {
+      animate();
+      setInterval(() => {
+        if (!running) return;
+        const r = Math.random();
+        if (r < 0.1) {
+          fireMessageSet();
+        } else if (r < 0.2) {
+          rockets.push(new Rocket(Math.random() * w));
+          rockets.push(new Rocket(Math.random() * w + 20));
+        } else {
+          rockets.push(new Rocket(Math.random() * w));
+        }
+      }, 4000);
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      running = !document.hidden;
+    });
+
+    fetch('./static/js/letter_map_full.json')
+      .then(res => res.json())
+      .then(data => {
+        letterMap = data;
+      })
+      .catch(err => console.error('Error loading letter map:', err));
+  </script>
+
+</body>
+
+</html>
