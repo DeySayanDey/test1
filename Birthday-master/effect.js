@@ -165,13 +165,13 @@ $('document').ready(function () {
 		});
 	});
 
-	$('#story').click(function () {
+$('#story').click(function () {
     $(this).fadeOut('slow');
-	// Define your playlist
+
+    // Define your playlist
     var playlist = [
         "../static/music/janam-janam.mp3",
         "../static/music/jara-jara.mp3",
-
     ];
 
     var audio = $('.song')[0];
@@ -181,54 +181,62 @@ $('document').ready(function () {
     function playSong(index, startAt = 0) {
         audio.src = playlist[index];
         audio.load();
-        audio.addEventListener("loadedmetadata", function () {
-            audio.currentTime = startAt; // skip first seconds if needed
-            audio.play();
-        }, { once: true });
+        audio.onloadedmetadata = function () {
+            audio.currentTime = startAt;
+            audio.play().then(() => {
+                // ✅ Start animation only when first song actually starts
+                if (index === 0) {
+                    startMessageAnimation();
+                }
+            });
+        };
     }
 
     // Event: when one song ends → play next
     audio.onended = function () {
         currentIndex++;
         if (currentIndex < playlist.length) {
-            playSong(currentIndex, 0); // play next song from beginning
+            playSong(currentIndex, 10); // play next song from beginning
         }
     };
 
-    // Start first song, skip first 10s
+    // Start first song, skip 220s
     playSong(currentIndex, 10);
 
+    // === Message Animation ===
+    function startMessageAnimation() {
+        $('.message').fadeIn('slow');
 
-    $('.message').fadeIn('slow');
+        var total = $(".message p").length; // count total messages
 
-    var total = $(".message p").length; // count total messages
+        function msgLoop(i) {
+            $("p:nth-child(" + i + ")")
+                .fadeOut(1000)
+                .delay(500)
+                .promise()
+                .done(function () {
+                    i = i + 1;
 
-    function msgLoop(i) {
-        $("p:nth-child(" + i + ")")
-            .fadeOut(1000)
-            .delay(500)
-            .promise()
-            .done(function () {
-                i = i + 1;
+                    if (i < total) {
+                        // middle messages: fade in + move on
+                        $("p:nth-child(" + i + ")")
+                            .fadeIn(1000)
+                            .delay(5000);
 
-                if (i < total) {
-                    // middle messages: fade in + move on
-                    $("p:nth-child(" + i + ")")
-                        .fadeIn(1000)
-                        .delay(5000);
+                        msgLoop(i);
+                    } else {
+                        // last message: fade in and stay
+                        $("p:nth-child(" + i + ")").fadeIn(1000).promise().done(function () {
+                            $('#go_balcony').fadeIn(2000);
+                        });
+                    }
+                });
+        }
 
-                    msgLoop(i);
-                } else {
-                    // last message: fade in and stay
-                    $("p:nth-child(" + i + ")").fadeIn(1000).promise().done(function () {
-                        $('#go_balcony').fadeIn(2000);
-                    });
-                }
-            });
+        msgLoop(0);
     }
-
-    msgLoop(0);
 });
+
 
 
 	// Balcony button action
