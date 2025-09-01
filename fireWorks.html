@@ -159,9 +159,10 @@
     });
 
 
-    var playlist = [
+       var playlist = [
       "./static/music/ARMAAN_MALIK.mp3",
-      "./static/music/Arijit_Singh.mp3",
+      "./static/music/jara-jara.mp3",
+      "./static/music/janam-janam.mp3",
 
     ];
 
@@ -179,7 +180,7 @@
     // Event: when one song ends → play next
  audio.onended = function () {
   currentIndex = (currentIndex + 1) % playlist.length;
-  playSong(currentIndex, 0);
+  playSong(currentIndex, 10);
 };
 
 
@@ -462,3 +463,4 @@
 </body>
 
 </html>
+
