@@ -170,7 +170,7 @@ $('document').ready(function () {
 	// Define your playlist
     var playlist = [
         "../static/music/janam-janam.mp3",
-        "../static/music/jara-jara.mp3.mp3",
+        "../static/music/jara-jara.mp3",
 
     ];
 
