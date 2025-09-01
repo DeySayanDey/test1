@@ -130,8 +130,9 @@
   <div id="startOverlay">
     <div class="overlayContent">✨ Click to Start ✨</div>
   </div>
-  <audio id="bgMusic" loop autoplay muted>
-    <source src="./static/music/calm-night1.mp3" type="audio/mpeg">
+  <audio id="bgMusic" autoplay muted></audio>
+
+    <source src="" type="audio/mpeg">
   </audio>
 
   <canvas id="starCanvas"></canvas>
@@ -148,13 +149,39 @@
     const overlay = document.getElementById("startOverlay");
     const audio = document.getElementById("bgMusic");
 
+    var currentIndex = 0;
     overlay.addEventListener("click", () => {
       overlay.style.display = "none";  // hide overlay
       audio.muted = false;
       audio.volume = 1;
-      audio.play().catch(err => console.log("Audio play failed:", err));
+      playSong(currentIndex, 12);  // ✅ correct call
       startFireworks();  // 🚀 begin fireworks animation
     });
+
+
+    var playlist = [
+      "./static/music/ARMAAN_MALIK.mp3",
+      "./static/music/Arijit_Singh.mp3",
+
+    ];
+
+
+    // Function to load and play a song
+    function playSong(index, startAt = 0) {
+      audio.src = playlist[index];
+      audio.load();
+      audio.addEventListener("loadedmetadata", function () {
+        audio.currentTime = startAt; // skip first seconds if needed
+        audio.play();
+      }, { once: true });
+    }
+
+    // Event: when one song ends → play next
+ audio.onended = function () {
+  currentIndex = (currentIndex + 1) % playlist.length;
+  playSong(currentIndex, 0);
+};
+
 
 
     // Mute/Unmute toggle
