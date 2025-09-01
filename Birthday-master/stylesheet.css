@@ -5,7 +5,13 @@ body {
 	background: #0a0a0a;
 	/* fallback */
 	color: #fff;
+	user-select: none;      /* disable text selection */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
+
+
 
 /* Dark wall + floor gradient like old theme */
 .back-wall {
@@ -1466,9 +1472,9 @@ audio {
 	margin-top: 200px;
 	display: none;
 }
-
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap');
 .message p {
-	font-family: 'Pacifico', cursive;
+	font-family: 'Alex Brush', cursive; /* readable body */
 	font-size: 42px;
 	font-weight: 700;
 	text-transform: uppercase !important;
@@ -1476,14 +1482,18 @@ audio {
 	z-index: 999;
 	display: none;
 }
-.message p span{
+
+.message p span {
 	/* Gradient metallic shine */
-	background: linear-gradient(70deg, #ff0404 0%,#540081 30% , #0d00ff 65%, #1bddff 100%);
+	background: linear-gradient(70deg, #00F5FF 0%, #00FFA3 30%, #FFDD00 65%, #FF0080 100%);
+
+
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
+
 	background-clip: text;
 	/* Add sharp highlight for shine */
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2), 0px 0px 2px rgba(255, 255, 255, 0.153);
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2), 0px 0px 2px rgba(153, 153, 153, 0.566);
 }
 
 
