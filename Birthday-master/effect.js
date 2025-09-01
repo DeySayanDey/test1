@@ -167,6 +167,38 @@ $('document').ready(function () {
 
 	$('#story').click(function () {
     $(this).fadeOut('slow');
+	// Define your playlist
+    var playlist = [
+        "../static/music/janam-janam.mp3",
+        "../static/music/jara-jara.mp3.mp3",
+
+    ];
+
+    var audio = $('.song')[0];
+    var currentIndex = 0;
+
+    // Function to load and play a song
+    function playSong(index, startAt = 0) {
+        audio.src = playlist[index];
+        audio.load();
+        audio.addEventListener("loadedmetadata", function () {
+            audio.currentTime = startAt; // skip first seconds if needed
+            audio.play();
+        }, { once: true });
+    }
+
+    // Event: when one song ends → play next
+    audio.onended = function () {
+        currentIndex++;
+        if (currentIndex < playlist.length) {
+            playSong(currentIndex, 0); // play next song from beginning
+        }
+    };
+
+    // Start first song, skip first 10s
+    playSong(currentIndex, 10);
+
+
     $('.message').fadeIn('slow');
 
     var total = $(".message p").length; // count total messages
@@ -174,7 +206,7 @@ $('document').ready(function () {
     function msgLoop(i) {
         $("p:nth-child(" + i + ")")
             .fadeOut(1000)
-            .delay(1000)
+            .delay(500)
             .promise()
             .done(function () {
                 i = i + 1;
@@ -183,7 +215,7 @@ $('document').ready(function () {
                     // middle messages: fade in + move on
                     $("p:nth-child(" + i + ")")
                         .fadeIn(1000)
-                        .delay(3000);
+                        .delay(5000);
 
                     msgLoop(i);
                 } else {
