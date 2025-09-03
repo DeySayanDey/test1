@@ -130,10 +130,11 @@
   <div id="startOverlay">
     <div class="overlayContent">✨ Click to Start ✨</div>
   </div>
-  <audio id="bgMusic" autoplay muted></audio>
+ <audio id="bgMusic">
+  <source src="" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
 
-    <source src="" type="audio/mpeg">
-  </audio>
 
   <canvas id="starCanvas"></canvas>
   <canvas id="fireCanvas"></canvas>
@@ -463,4 +464,5 @@
 </body>
 
 </html>
+
 
