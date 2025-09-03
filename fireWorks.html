@@ -130,11 +130,10 @@
   <div id="startOverlay">
     <div class="overlayContent">✨ Click to Start ✨</div>
   </div>
- <audio id="bgMusic">
-  <source src="" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
+  <audio id="bgMusic" autoplay muted></audio>
 
+    <source src="" type="audio/mpeg">
+  </audio>
 
   <canvas id="starCanvas"></canvas>
   <canvas id="fireCanvas"></canvas>
@@ -161,8 +160,11 @@
 
 
     var playlist = [
+      "./static/music/ARMAAN_MALIK_1.mp3",
+      "./static/music/ARMAAN_MALIK_2.mp3",
+      "./static/music/ARMAAN_MALIK_3.mp3",
+      "./static/music/ARMAAN_MALIK_4.mp3",
       "./static/music/jara-jara.mp3",
-      "./static/music/ARMAAN_MALIK.mp3",
       "./static/music/janam-janam.mp3",
 
     ];
@@ -181,7 +183,7 @@
     // Event: when one song ends → play next
  audio.onended = function () {
   currentIndex = (currentIndex + 1) % playlist.length;
-  playSong(currentIndex, 10);
+  playSong(currentIndex);
 };
 
 
@@ -464,5 +466,3 @@
 </body>
 
 </html>
-
-
